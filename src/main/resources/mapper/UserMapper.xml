@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dandan.wendy.community.mapper.UserMapper">
+
+    <!--查询所有用户-->
+    <!--<select id="findAll"  resultType="user">
+ 		select * from user
+ 	</select>-->
+
+    <!--保存新的用户-->
+    <insert id="insert" parameterType="User">
+        insert into user(name,accountId,token,gmtCreate,gmtModefied) values (#{name},#{accountId},#{token},#{gmtCreate},#{gmtModefied});
+    </insert>
+
+</mapper>

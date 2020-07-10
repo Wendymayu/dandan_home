@@ -62,12 +62,12 @@
         </dependency>-->
 
         <!--h2数据库，无需安装，直接jar包即可使用-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.199</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
 
         <!--mybatis-->
         <dependency>
@@ -88,6 +88,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!--此依赖可让student不出现警告-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
