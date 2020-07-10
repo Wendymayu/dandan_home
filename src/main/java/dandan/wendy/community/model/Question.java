@@ -6,7 +6,7 @@ public class Question {
     private String description;
     private String tag;
     private Long gmtCreate;
-    private Long gmtModefied;
+    private Long gmtModified;
     private int creator;
     private int viewCount;
     private int commentCount;
@@ -53,11 +53,11 @@ public class Question {
     }
 
     public Long getGmtModefied() {
-        return gmtModefied;
+        return gmtModified;
     }
 
     public void setGmtModefied(Long gmtModefied) {
-        this.gmtModefied = gmtModefied;
+        this.gmtModified = gmtModefied;
     }
 
     public int getCreator() {

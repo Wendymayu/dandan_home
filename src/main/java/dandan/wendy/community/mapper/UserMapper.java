@@ -14,9 +14,10 @@ public interface UserMapper {
 
    @Select("select * from user where token = #{token}")
    User findByToken(@Param("token") String token);
-   /*使用该方法可以给数据库添加一列bio,必须指定varchar(20)*/
-   @Insert("alter table user add column bio varchar(200)")
-   public void addColumn();
 
+   /*使用该方法可以给数据库添加一列bio,必须指定varchar(20)*/
+   /*@Insert("alter table user add column bio varchar(200)")*/
+   @Insert("alter table user add avatarUrl varchar(100) null")
+   public void addColumn();
 }
 

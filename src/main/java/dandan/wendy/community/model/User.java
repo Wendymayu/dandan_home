@@ -11,8 +11,9 @@ public class User {
     private String accountId;
     private String token;
     private Long gmtCreate;
-    private Long gmtModefied;
+    private Long gmtModified;
     private String bio;
+    private String avatarUrl;
 
     public int getId() {
         return id;
@@ -54,12 +55,12 @@ public class User {
         this.gmtCreate = gmtCreate;
     }
 
-    public Long getGmtModefied() {
-        return gmtModefied;
+    public Long getGmtModified() {
+        return gmtModified;
     }
 
-    public void setGmtModefied(Long gmtModefied) {
-        this.gmtModefied = gmtModefied;
+    public void setGmtModified(Long gmtModefied) {
+        this.gmtModified = gmtModefied;
     }
 
     public String getBio() {
@@ -68,5 +69,13 @@ public class User {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }
