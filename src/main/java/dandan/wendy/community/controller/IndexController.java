@@ -1,9 +1,11 @@
 package dandan.wendy.community.controller;
 
+import dandan.wendy.community.dto.QuestionDTO;
 import dandan.wendy.community.mapper.QuestionMapper;
 import dandan.wendy.community.mapper.UserMapper;
 import dandan.wendy.community.model.Question;
 import dandan.wendy.community.model.User;
+import dandan.wendy.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +21,7 @@ public class IndexController {
     private UserMapper userMapper;
 
     @Autowired
-    private QuestionMapper questionMapper;
+    private QuestionService questionService;
 
     @GetMapping("/")
     public String index(HttpServletRequest request,
@@ -39,8 +41,9 @@ public class IndexController {
             }
         }
 
-        List<Question> questionList = questionMapper.List();
-        model.addAttribute("question",questionList);
+        List<QuestionDTO> questionList = questionService.List();
+        //页面通过该处的questions 才能获得model中响应的内容
+        model.addAttribute("questions",questionList);
         return "index";
     }
 }
