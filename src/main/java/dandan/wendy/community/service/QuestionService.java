@@ -36,14 +36,16 @@ public class QuestionService {
             totalPage = totalCount/size +1;
         }
 
-        if (page < 1) {
-            page = 1;
-        }
+
         if (page > totalPage) {
             page = totalPage;
         }
+        if (page < 1) {
+            page = 1;
+        }
         paginationDTO.setPagination(totalPage,page);
         int offset = size*(page-1);
+
         List<Question> questions = questionMapper.List(offset,size);
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
@@ -63,6 +65,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
+    //查看个人发布的问题信息
     public PaginationDTO List(int userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         int totalPage;
@@ -75,11 +78,13 @@ public class QuestionService {
             totalPage = totalCount/size +1;
         }
 
-        if (page < 1) {
-            page = 1;
-        }
+        //因为totalPage可能为0，会导致下面offset=-5,出错，所以在下面判断page最小为1
         if (page > totalPage) {
             page = totalPage;
+        }
+
+        if (page < 1) {
+            page = 1;
         }
         paginationDTO.setPagination(totalPage,page);
 
@@ -100,5 +105,15 @@ public class QuestionService {
         paginationDTO.setQuestions(questionDTOList);
 
         return paginationDTO;
+    }
+
+    public QuestionDTO getById(int id) {
+        Question question = questionMapper.getById(id);
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question,questionDTO);
+        User user = userMapper.findById(question.getCreator());
+        questionDTO.setUser(user);
+
+        return questionDTO;
     }
 }

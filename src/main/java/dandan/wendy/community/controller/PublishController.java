@@ -1,7 +1,6 @@
 package dandan.wendy.community.controller;
 
 import dandan.wendy.community.mapper.QuestionMapper;
-import dandan.wendy.community.mapper.UserMapper;
 import dandan.wendy.community.model.Question;
 import dandan.wendy.community.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -19,8 +17,6 @@ public class PublishController {
     @Autowired
     private QuestionMapper questionMapper;
 
-    @Autowired
-    private UserMapper userMapper;
     
     @GetMapping("/publish")
     public String publish(){
@@ -50,8 +46,9 @@ public class PublishController {
             return "publish";
         }
 
+        User user = (User) request.getSession().getAttribute("user");
 
-        User user = null;
+       /* User user = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null || cookies.length != 0){
             for (Cookie cookie : cookies) {
@@ -64,7 +61,7 @@ public class PublishController {
                     break;
                 }
             }
-    }
+    }*/
 
         //空指针下面测试输出会报 空指针异常
         //System.out.println(user.getName());

@@ -1,5 +1,6 @@
 package dandan.wendy.community.mapper;
 
+import dandan.wendy.community.dto.QuestionDTO;
 import dandan.wendy.community.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -26,4 +27,7 @@ public interface QuestionMapper {
 
     @Select("select count(1) from question where creator = #{userId};")
     int countByUserId(@Param(value = "userId")int userId);
+
+    @Select("select * from question where id = #{id}")
+    Question getById(@Param("id")int id);
 }

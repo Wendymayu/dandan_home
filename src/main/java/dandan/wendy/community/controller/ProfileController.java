@@ -1,6 +1,6 @@
 package dandan.wendy.community.controller;
+
 import dandan.wendy.community.dto.PaginationDTO;
-import dandan.wendy.community.mapper.UserMapper;
 import dandan.wendy.community.model.User;
 import dandan.wendy.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -24,8 +23,6 @@ public class ProfileController {
    // @Autowired
   //  private NotificationService notificationService;
 
-   @Autowired
-   private UserMapper userMapper;
 
     @GetMapping("/profile/{action}")
     public String profile(HttpServletRequest request,
@@ -34,12 +31,12 @@ public class ProfileController {
                           @RequestParam(name = "page", defaultValue = "1") Integer page,
                           @RequestParam(name = "size", defaultValue = "5") Integer size) {
 
-       /* User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return "redirect:/";
-        }*/
+        }
 
-       User user = null;
+        /*User user = null;
         Cookie[] cookies = request.getCookies();
         System.out.println("cookies是 "+cookies);
 
@@ -54,11 +51,8 @@ public class ProfileController {
                     break;
                 }
             }
-        }
+        }*/
 
-        if (user == null) {
-            return "redirect:/";
-        }
 
         if ("questions".equals(action)) {
             model.addAttribute("section", "questions");
@@ -73,7 +67,7 @@ public class ProfileController {
         }
         int userId = user.getId();
        // PaginationDTO pagination = questionService.List(user.getId(),page,size);
-        PaginationDTO pagination = questionService.List(12,page,size);
+        PaginationDTO pagination = questionService.List(userId,page,size);
         model.addAttribute("pagination",pagination);
         return "profile";
     }
