@@ -45,8 +45,12 @@ public class AuthorizeController {
         accessTokenDTO.setClient_id(clientId);
         accessTokenDTO.setClient_secret(clientSecret);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
-        System.out.println(accessToken.toString());
+
+        System.out.println("accessToken是 "+accessToken.toString());
+
         GithubUser githubUser = githubProvider.getUser(accessToken);
+
+        System.out.println("githubUser是"+githubUser);
         if(githubUser != null && githubUser.getId() !=null){
             User user = new User();
             String token = UUID.randomUUID().toString();

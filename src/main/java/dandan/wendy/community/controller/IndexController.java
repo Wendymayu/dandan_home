@@ -1,5 +1,6 @@
 package dandan.wendy.community.controller;
 
+import dandan.wendy.community.dto.PaginationDTO;
 import dandan.wendy.community.dto.QuestionDTO;
 import dandan.wendy.community.mapper.QuestionMapper;
 import dandan.wendy.community.mapper.UserMapper;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,25 +27,27 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request,
-                        Model model){
+                        Model model,
+                        @RequestParam(name="page",defaultValue = "1") int page,
+                        @RequestParam(name="size",defaultValue = "5") int size){
         Cookie[] cookies = request.getCookies();
 
-        if(cookies !=null || cookies.length !=0){
+        if(cookies !=null || cookies.length !=0) {
             for (Cookie cookie : cookies) {
-                if(cookie.getName().equals("token")){
+                if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
                     User user = userMapper.findByToken(token);
-                    if(user!=null){
-                        request.getSession().setAttribute("user",user);
+                    if (user != null) {
+                        request.getSession().setAttribute("user", user);
                     }
                     break;
                 }
             }
         }
 
-        List<QuestionDTO> questionList = questionService.List();
+        PaginationDTO pagination = questionService.List(page,size);
         //页面通过该处的questions 才能获得model中响应的内容
-        model.addAttribute("questions",questionList);
+        model.addAttribute("pagination",pagination);
         return "index";
     }
 }
