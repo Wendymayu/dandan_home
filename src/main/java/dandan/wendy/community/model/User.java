@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component//放入spring容器
 @ConfigurationProperties(prefix = "user")
 public class User {
-    private int id;
+    private Integer id;
     private String name;
     private String accountId;
     private String token;
@@ -15,11 +15,11 @@ public class User {
     private String bio;
     private String avatarUrl;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -59,8 +59,8 @@ public class User {
         return gmtModified;
     }
 
-    public void setGmtModified(Long gmtModefied) {
-        this.gmtModified = gmtModefied;
+    public void setGmtModified(Long gmtModified) {
+        this.gmtModified = gmtModified;
     }
 
     public String getBio() {

@@ -7,7 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-   //插入一个用户
+   //插入一个用户,在xml中实现
+   @Insert("insert into user(name,accountId,token,gmtCreate,gmtModified,avatarUrl)values(#{name},#{accountId},#{token},#{gmtCreate},#{gmtModified},#{avatarUrl})" )
    public void insert(User user);
 
    @Select("select * from user")
@@ -22,12 +23,12 @@ public interface UserMapper {
    public void addColumn();
 
    @Select("select * from user where id=#{id}")
-    User findById(@Param("id") int id);
+    User findById(@Param("id")Integer  id);
 
    @Select("select * from user where accountId=#{accountId}")
     User fingByAccountId(@Param("accountId")String accountId);
 
    @Update("update user set name = #{name},token = #{token},gmtModified = #{gmtModified},avatarUrl = #{avatarUrl} where id =#{id}")
-   void update(User dbUser);
+   void update(User user);
 }
 

@@ -13,4 +13,10 @@
 	<insert id="add" parameterType="Student">
         insert into student(name,sex,age,home,education,tutor,major,school)values(#{name},#{sex},#{age},#{home},#{education},#{tutor},#{major},#{school});
     </insert>
+
+	<!--保存新的用户-->
+	<!--<insert id="insert" parameterType="User">
+        insert into user(name,accountId,token,gmtCreate,gmtModified,avatarUrl)
+        values (#{name},#{accountId},#{token},#{gmtCreate},#{gmtModified},#{avatarUrl});
+    </insert>-->
 </mapper>

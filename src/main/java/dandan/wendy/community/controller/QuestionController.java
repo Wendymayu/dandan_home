@@ -1,15 +1,12 @@
 package dandan.wendy.community.controller;
 
 import dandan.wendy.community.dto.QuestionDTO;
-import dandan.wendy.community.mapper.QuestionMapper;
 import dandan.wendy.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.List;
 
 @Controller
 public class QuestionController {

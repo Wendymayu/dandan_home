@@ -28,14 +28,13 @@ public class QuestionService {
 
         int totalCount = questionMapper.count();
 
-        System.out.println("totalcount  " +totalCount);
+        System.out.println("totalcount  " + totalCount);
 
-        if(totalCount%size  ==0){
-            totalPage = totalCount/size;
-        }else{
-            totalPage = totalCount/size +1;
+        if (totalCount % size == 0) {
+            totalPage = totalCount / size;
+        } else {
+            totalPage = totalCount / size + 1;
         }
-
 
         if (page > totalPage) {
             page = totalPage;
@@ -43,21 +42,21 @@ public class QuestionService {
         if (page < 1) {
             page = 1;
         }
-        paginationDTO.setPagination(totalPage,page);
-        int offset = size*(page-1);
+        paginationDTO.setPagination(totalPage, page);
+        int offset = size * (page - 1);
 
-        List<Question> questions = questionMapper.List(offset,size);
+        List<Question> questions = questionMapper.List(offset, size);
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
 
         for (Question question : questions) {
-           User user= userMapper.findById(question.getCreator());
+            User user = userMapper.findById(question.getCreator());
 
-           QuestionDTO questionDTO = new QuestionDTO();
-           BeanUtils.copyProperties(question,questionDTO);
-           questionDTO.setUser(user);
-           questionDTOList.add(questionDTO);
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question, questionDTO);
+            questionDTO.setUser(user);
+            questionDTOList.add(questionDTO);
         }
 
         paginationDTO.setQuestions(questionDTOList);
@@ -66,16 +65,16 @@ public class QuestionService {
     }
 
     //查看个人发布的问题信息
-    public PaginationDTO List(int userId, Integer page, Integer size) {
+    public PaginationDTO List(Integer userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         int totalPage;
 
         int totalCount = questionMapper.countByUserId(userId);
 
-        if(totalCount%size ==0){
-            totalPage = totalCount/size;
-        }else{
-            totalPage = totalCount/size +1;
+        if (totalCount % size == 0) {
+            totalPage = totalCount / size;
+        } else {
+            totalPage = totalCount / size + 1;
         }
 
         //因为totalPage可能为0，会导致下面offset=-5,出错，所以在下面判断page最小为1
@@ -86,18 +85,18 @@ public class QuestionService {
         if (page < 1) {
             page = 1;
         }
-        paginationDTO.setPagination(totalPage,page);
+        paginationDTO.setPagination(totalPage, page);
 
-        int offset = size*(page-1);
-        System.out.println("offset  "+offset+"userId  ");
-        List<Question> questions = questionMapper.ListByUserId(userId,offset,size);
+        int offset = size * (page - 1);
+        System.out.println("offset  " + offset + "userId  ");
+        List<Question> questions = questionMapper.ListByUserId(userId, offset, size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
 
         for (Question question : questions) {
-            User user= userMapper.findById(question.getCreator());
+            User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question,questionDTO);
+            BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
@@ -107,13 +106,27 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public QuestionDTO getById(int id) {
+    public QuestionDTO getById(Integer id) {
         Question question = questionMapper.getById(id);
         QuestionDTO questionDTO = new QuestionDTO();
-        BeanUtils.copyProperties(question,questionDTO);
+        BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.findById(question.getCreator());
         questionDTO.setUser(user);
 
         return questionDTO;
+    }
+
+
+    public void createOrUpdate(Question question) {
+        if (question.getId() == null) {
+            //创建
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.create(question);
+        } else {
+            //更新
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.update(question);
+        }
     }
 }

@@ -1,22 +1,23 @@
 package dandan.wendy.community.model;
 
 public class Question {
-    private int id;
+    private Integer id;
     private String title;
     private String description;
     private String tag;
     private Long gmtCreate;
     private Long gmtModified;
-    private int creator;
-    private int viewCount;
-    private int commentCount;
-    private int likeCount;
+    private Integer creator;
+    private Integer viewCount;
+    private Integer commentCount;
+    private Integer likeCount;
 
-    public int getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -52,43 +53,43 @@ public class Question {
         this.gmtCreate = gmtCreate;
     }
 
-    public Long getGmtModefied() {
+    public Long getGmtModified() {
         return gmtModified;
     }
 
-    public void setGmtModefied(Long gmtModefied) {
-        this.gmtModified = gmtModefied;
+    public void setGmtModified(Long gmtModified) {
+        this.gmtModified = gmtModified;
     }
 
-    public int getCreator() {
+    public Integer getCreator() {
         return creator;
     }
 
-    public void setCreator(int creator) {
+    public void setCreator(Integer creator) {
         this.creator = creator;
     }
 
-    public int getViewCount() {
+    public Integer getViewCount() {
         return viewCount;
     }
 
-    public void setViewCount(int viewCount) {
+    public void setViewCount(Integer viewCount) {
         this.viewCount = viewCount;
     }
 
-    public int getCommentCount() {
+    public Integer getCommentCount() {
         return commentCount;
     }
 
-    public void setCommentCount(int commentCount) {
+    public void setCommentCount(Integer commentCount) {
         this.commentCount = commentCount;
     }
 
-    public int getLikeCount() {
+    public Integer getLikeCount() {
         return likeCount;
     }
 
-    public void setLikeCount(int likeCount) {
+    public void setLikeCount(Integer likeCount) {
         this.likeCount = likeCount;
     }
 }
