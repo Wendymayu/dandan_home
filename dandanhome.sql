@@ -1,4 +1,4 @@
-CREATE DATABASE community;
+`information_schema`CREATE DATABASE community;
 
 CREATE TABLE USER
 (
@@ -26,6 +26,7 @@ CREATE TABLE question
     tag VARCHAR(256)
 );
 
+/*删除表`user`*/
 DROP TABLE question;
 
 /*删除表中一列*/

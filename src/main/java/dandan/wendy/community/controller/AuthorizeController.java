@@ -49,7 +49,7 @@ public class AuthorizeController {
         accessTokenDTO.setClient_secret(clientSecret);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
 
-        System.out.println("accessToken是 "+accessToken.toString());
+        //System.out.println("accessToken是 "+accessToken.toString());
 
         GithubUser githubUser = githubProvider.getUser(accessToken);
 
@@ -61,7 +61,7 @@ public class AuthorizeController {
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setAvatarUrl(githubUser.getAvatarUrl());
-
+            System.out.println("user  "+user);
             userService.createOrUpdate(user);
 
             response.addCookie(new Cookie("token",token));

@@ -81,7 +81,6 @@ public class PublishController {
                 }
             }
     }*/
-
         //空指针下面测试输出会报 空指针异常
         //System.out.println(user.getName());
         if(user==null){
@@ -102,7 +101,6 @@ public class PublishController {
         }else{
 
         }
-
 
         questionService.createOrUpdate(question);
         return "redirect:/";

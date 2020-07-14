@@ -12,6 +12,7 @@
                         connectionURL="jdbc:mysql://localhost:3306/community?serverTimezone=GMT%2B8"
                         userId="root"
                         password="52wendyma">
+            <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -32,7 +33,15 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="user" domainObjectName="User"></table>
+       <!-- <table  tableName="user" domainObjectName="User">
+            &lt;!&ndash;默认并不为驼峰，需要下面这个property属性设置，并且该属性必须在上面&ndash;&gt;
+            <property name="useActualColumnNames" value="true" />
+           &lt;!&ndash; <columnOverride column="account_id" javaType="java.lang.String" jdbcType="VARCHAR" />&ndash;&gt;</table>
+-->
+
+        <table tableName="question" domainObjectName="Question">
+            <property name="useActualColumnNames" value="true" />
+        </table>
         <!--<table tableName="question" domainObjectName="Question"></table>
         <table tableName="comment" domainObjectName="Comment"></table>
         <table tableName="notification" domainObjectName="Notification"></table>
