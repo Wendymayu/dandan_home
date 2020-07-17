@@ -33,13 +33,17 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-       <!-- <table  tableName="user" domainObjectName="User">
-            &lt;!&ndash;默认并不为驼峰，需要下面这个property属性设置，并且该属性必须在上面&ndash;&gt;
+        <table  tableName="user" domainObjectName="User">
+            <!--默认并不为驼峰，需要下面这个property属性设置，并且该属性必须在上面-->
             <property name="useActualColumnNames" value="true" />
-           &lt;!&ndash; <columnOverride column="account_id" javaType="java.lang.String" jdbcType="VARCHAR" />&ndash;&gt;</table>
--->
+           <!-- <columnOverride column="account_id" javaType="java.lang.String" jdbcType="VARCHAR" />--></table>
+
 
         <table tableName="question" domainObjectName="Question">
+            <property name="useActualColumnNames" value="true" />
+        </table>
+
+        <table tableName="comment" domainObjectName="Comment">
             <property name="useActualColumnNames" value="true" />
         </table>
         <!--<table tableName="question" domainObjectName="Question"></table>

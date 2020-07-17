@@ -4,18 +4,22 @@ import dandan.wendy.community.dto.PaginationDTO;
 import dandan.wendy.community.dto.QuestionDTO;
 import dandan.wendy.community.exception.CustomizeErrorCode;
 import dandan.wendy.community.exception.CustomizeException;
+import dandan.wendy.community.mapper.QuestionExtMapper;
 import dandan.wendy.community.mapper.QuestionMapper;
 import dandan.wendy.community.mapper.UserMapper;
 import dandan.wendy.community.model.Question;
 import dandan.wendy.community.model.QuestionExample;
 import dandan.wendy.community.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -25,6 +29,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO List(int page, int size) {
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -70,7 +77,7 @@ public class QuestionService {
     }
 
     //查看个人发布的问题信息
-    public PaginationDTO List(Integer userId, Integer page, Integer size) {
+    public PaginationDTO List(Long userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         int totalPage;
 
@@ -101,6 +108,9 @@ public class QuestionService {
         System.out.println("offset  " + offset + "userId  ");
         //List<Question> questions = questionMapper.ListByUserId(userId, offset, size);
         QuestionExample example = new QuestionExample();
+
+        example.setOrderByClause("gmtCreate desc");
+
         example.createCriteria()
                 .andCreatorEqualTo(userId);
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
@@ -121,7 +131,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
@@ -140,6 +150,9 @@ public class QuestionService {
             //创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setViewCount(0);
+            question.setLikeCount(0);
+            question.setCommentCount(0);
             questionMapper.insert(question);
         } else {
             //更新
@@ -158,5 +171,43 @@ public class QuestionService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
+    }
+
+    public void incView(Long id) {
+
+        //如果同时很多人阅读，阅读数不真实，这是并发问题,下面的代码不好用了
+        /*Question question = questionMapper.selectByPrimaryKey(id);
+        Question updateQuestion = new Question();
+        updateQuestion.setViewCount(question.getViewCount() + 1);
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andIdEqualTo(id);
+        questionMapper.updateByExampleSelective(updateQuestion,questionExample);*/
+
+        //这段可解决并发问题
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
+
+    }
+
+    public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
+        if(StringUtils.isBlank(queryDTO.getTag())){
+            return new ArrayList<>();
+        }
+        String[] tags = StringUtils.split(queryDTO.getTag(), ",");
+        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+
+        Question question = new Question();
+        question.setId(queryDTO.getId());
+        question.setTag(regexpTag);
+
+        List<Question> questions = questionExtMapper.selectRelated(question);
+        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q, questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        return questionDTOS;
     }
 }

@@ -5,5 +5,5 @@ package dandan.wendy.community.exception;
  */
 public interface ICustomizeErrorCode {
     String getMessage() ;
-    //Integer getCode();
+    Integer getCode();
 }

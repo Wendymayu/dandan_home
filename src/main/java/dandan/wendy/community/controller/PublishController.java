@@ -1,10 +1,11 @@
 package dandan.wendy.community.controller;
 
+import dandan.wendy.community.cache.TagCache;
 import dandan.wendy.community.dto.QuestionDTO;
-import dandan.wendy.community.mapper.QuestionMapper;
 import dandan.wendy.community.model.Question;
 import dandan.wendy.community.model.User;
 import dandan.wendy.community.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,19 +24,21 @@ public class PublishController {
 
     //编辑已发布问题的方法
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id") int id,
+    public String edit(@PathVariable(name = "id") Long id,
                        Model model) {
         QuestionDTO question = questionService.getById(id);
         model.addAttribute("title", question.getTitle());
         model.addAttribute("description", question.getDescription());
         model.addAttribute("tag", question.getTag());
         model.addAttribute("id", question.getId());
+        model.addAttribute("tags", TagCache.get());
+        System.out.println("tags   "+TagCache.get().toString());
         return "publish";
     }
     
     @GetMapping("/publish")
-    public String publish(){
-        System.out.println("________________");
+    public String publish(Model model){
+        model.addAttribute("tags",TagCache.get());
         return "publish";
     }
 
@@ -43,7 +46,7 @@ public class PublishController {
     public String doPublish(@RequestParam(value = "title", required = false) String title,
                             @RequestParam(value = "description", required = false) String description,
                             @RequestParam(value = "tag", required = false) String tag,
-                            @RequestParam(value = "id", required = false) Integer id,
+                            @RequestParam(value = "id", required = false) Long id,
                             HttpServletRequest request,
                             Model model) {
 
@@ -51,6 +54,9 @@ public class PublishController {
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
         model.addAttribute("id", id);
+        model.addAttribute("tags", TagCache.get());
+
+        System.out.println("tags   "+TagCache.get().toString());
 
         if (title == null || title == "") {
             model.addAttribute("error", "标题不能为空");
@@ -64,25 +70,17 @@ public class PublishController {
             model.addAttribute("error", "标签不能为空");
             return "publish";
         }
-        System.out.println("能得到user吗");
+
+        String invalid = TagCache.filterInvalid(tag);
+        if (StringUtils.isNotBlank(invalid)) {
+            model.addAttribute("error", "输入非法标签:" + invalid);
+            return "publish";
+        }
+
         User user = (User) request.getSession().getAttribute("user");
-        System.out.println("能，user是  "+user);
-       /* User user = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null || cookies.length != 0){
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {
-                    String token = cookie.getValue();
-                    user = userMapper.findByToken(token);
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);
-                    }
-                    break;
-                }
-            }
-    }*/
+        //System.out.println("能，user是  "+user);
+
         //空指针下面测试输出会报 空指针异常
-        //System.out.println(user.getName());
         if(user==null){
             model.addAttribute("error","用户未登录");
             return "publish";
