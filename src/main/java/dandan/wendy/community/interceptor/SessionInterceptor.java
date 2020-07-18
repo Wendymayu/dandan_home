@@ -3,6 +3,7 @@ package dandan.wendy.community.interceptor;
 import dandan.wendy.community.mapper.UserMapper;
 import dandan.wendy.community.model.User;
 import dandan.wendy.community.model.UserExample;
+import dandan.wendy.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
@@ -24,8 +25,8 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     private UserMapper userMapper;
 
-   /* @Autowired
-    private NotificationService notificationService;*/
+    @Autowired
+    private NotificationService notificationService;
 
     /*@Autowired
     private AdService adService;*/
@@ -67,6 +68,8 @@ public class SessionInterceptor implements HandlerInterceptor {
                     List<User> users = userMapper.selectByExample(userExample);
                     if (users.size() != 0) {
                         request.getSession().setAttribute("user", users.get(0));
+                        Long unreadCount = notificationService.unreadCount(users.get(0).getId());
+                        request.getSession().setAttribute("unreadCount",unreadCount);
                     }
                     break;
                 }

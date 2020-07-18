@@ -2,6 +2,7 @@ package dandan.wendy.community.controller;
 
 import dandan.wendy.community.dto.PaginationDTO;
 import dandan.wendy.community.model.User;
+import dandan.wendy.community.service.NotificationService;
 import dandan.wendy.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +21,8 @@ public class ProfileController {
     @Autowired
     private QuestionService questionService;
 
-   // @Autowired
-  //  private NotificationService notificationService;
+   @Autowired
+    private NotificationService notificationService;
 
 
     @GetMapping("/profile/{action}")
@@ -36,39 +37,24 @@ public class ProfileController {
             return "redirect:/";
         }
 
-        /*User user = null;
-        Cookie[] cookies = request.getCookies();
-        System.out.println("cookies是 "+cookies);
-
-        if(cookies !=null || cookies.length !=0) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {
-                    String token = cookie.getValue();
-                    user = userMapper.findByToken(token);
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);
-                    }
-                    break;
-                }
-            }
-        }*/
-
 
         if ("questions".equals(action)) {
             model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的提问");
-           /* PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
-            model.addAttribute("pagination", paginationDTO);*/
+           /* PaginationDTO pagination = questionService.List(user.getId(),page,size);
+            model.addAttribute("pagination",pagination);*/
+            PaginationDTO paginationDTO = questionService.List(user.getId(), page, size);
+            model.addAttribute("pagination", paginationDTO);
         } else if ("replies".equals(action)) {
-           // PaginationDTO paginationDTO = notificationService.list(user.getId(), page, size);
+            PaginationDTO paginationDTO = notificationService.list(user.getId(), page, size);
+           // Long unreadCount = notificationService.unreadCount(user.getId());
             model.addAttribute("section", "replies");
-           // model.addAttribute("pagination", paginationDTO);
+            model.addAttribute("pagination", paginationDTO);
+           // model.addAttribute("unreadCount", unreadCount);
             model.addAttribute("sectionName", "最新回复");
         }
-        Long userId = user.getId();
-       // PaginationDTO pagination = questionService.List(user.getId(),page,size);
-        PaginationDTO pagination = questionService.List(userId,page,size);
-        model.addAttribute("pagination",pagination);
+
+
         return "profile";
     }
 }

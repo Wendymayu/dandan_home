@@ -52,7 +52,7 @@ public class CommentController {
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setCommentator(user.getId());
         comment.setLikeCount(0L);
-        commentService.insert(comment);
+        commentService.insert(comment,user);
 
         return ResultDTO.okOf();
 
@@ -66,38 +66,4 @@ public class CommentController {
         return ResultDTO.okOf(commentDTOS);
     }
 
-   /* @Autowired
-    private CommentService commentService;
-
-    @ResponseBody
-    @RequestMapping(value = "/comment", method = RequestMethod.POST)
-    public Object post(@RequestBody CommentCreateDTO commentCreateDTO,
-                       HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
-            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
-        }
-
-        if (commentCreateDTO == null || StringUtils.isBlank(commentCreateDTO.getContent())) {
-            return ResultDTO.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
-        }
-
-        Comment comment = new Comment();
-        comment.setParentId(commentCreateDTO.getParentId());
-        comment.setContent(commentCreateDTO.getContent());
-        comment.setType(commentCreateDTO.getType());
-        comment.setGmtModified(System.currentTimeMillis());
-        comment.setGmtCreate(System.currentTimeMillis());
-        comment.setCommentator(user.getId());
-        comment.setLikeCount(0L);
-        commentService.insert(comment, user);
-        return ResultDTO.okOf();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
-    public ResultDTO<List<CommentCreateDTO>> comments(@PathVariable(name = "id") Long id) {
-        List<CommentCreateDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
-        return ResultDTO.okOf(commentDTOS);
-    }*/
 }

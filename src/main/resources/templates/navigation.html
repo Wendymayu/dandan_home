@@ -25,13 +25,16 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li th:if="${session.user} != null"><a href="/publish">提问</a></li>
+                    <li><a href="/profile/replies">通知 <span class="badge" th:text="${session.unreadCount}"></span></a></li>
                     <!--验证是否获取到githubuser <div th:text="${session.githubUser}"></div>-->
+
                     <li class="dropdown" th:if="${session.githubUser != null}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false" >
                             <span th:text="${session.githubUser.getName()}"></span>
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu">
+
                             <li><a href="/profile/questions">我的问题</a></li>
                             <li><a href="/logout">退出登录</a></li>
                         </ul>
