@@ -16,7 +16,11 @@
         <result column="viewCount" jdbcType="INTEGER" property="viewCount" />
         <result column="likeCount" jdbcType="INTEGER" property="likeCount" />
         <result column="tag" jdbcType="VARCHAR" property="tag" />
+        <!--<result column="description" jdbcType="LONGVARCHAR" property="description" />-->
     </resultMap>
+    <!--<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="dandan.wendy.community.model.Question">
+        <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    </resultMap>-->
 
     <update id="incView" parameterType="dandan.wendy.community.model.Question">
     update question
@@ -45,6 +49,27 @@
             </if>
         </where>
         order by gmtCreate desc limit 20
+    </select>
+
+   <!--搜索话题的个数-->
+    <select id="countBySearch" parameterType="dandan.wendy.community.dto.QuestionQueryDTO" resultType="Integer">
+    select count(*) from question
+    <where>
+        <if test="search != null and search != ''">
+            and title regexp #{search}
+        </if>
+    </where>
+    </select>
+
+    <!--搜索话题-->
+    <select id="selectBySearch" parameterType="dandan.wendy.community.dto.QuestionQueryDTO" resultMap="BaseResultMap">
+        select * from question
+        <where>
+            <if test="search != null and search != ''">
+                and title regexp #{search}
+            </if>
+        </where>
+        order by gmtCreate desc limit #{page},#{size}
     </select>
 
 </mapper>

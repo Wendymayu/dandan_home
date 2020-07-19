@@ -2,6 +2,7 @@ package dandan.wendy.community.service;
 
 import dandan.wendy.community.dto.PaginationDTO;
 import dandan.wendy.community.dto.QuestionDTO;
+import dandan.wendy.community.dto.QuestionQueryDTO;
 import dandan.wendy.community.exception.CustomizeErrorCode;
 import dandan.wendy.community.exception.CustomizeException;
 import dandan.wendy.community.mapper.QuestionExtMapper;
@@ -33,11 +34,25 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
-    public PaginationDTO List(int page, int size) {
-        PaginationDTO paginationDTO = new PaginationDTO();
-        int totalPage;
+    public PaginationDTO List(String search,int page, int size) {
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, " ");
+            search = Arrays.stream(tags).collect(Collectors.joining("|"));
+            /*search = Arrays
+                    .stream(tags)
+                    .filter(StringUtils::isNotBlank)
+                    .map(t -> t.replace("+", "").replace("*", "").replace("?", ""))
+                    .filter(StringUtils::isNotBlank)
+                    .collect(Collectors.joining("|"));*/
+        }
 
-        int totalCount = (int)questionMapper.countByExample(new QuestionExample());
+        PaginationDTO paginationDTO = new PaginationDTO();
+
+        int totalPage;
+        //int totalCount = (int)questionMapper.countByExample(new QuestionExample());
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
 
         System.out.println("totalcount  " + totalCount);
 
@@ -57,7 +72,16 @@ public class QuestionService {
         int offset = size * (page - 1);
 
         //List<Question> questions = questionMapper.List(offset, size);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+        //List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+        QuestionExample questionExample =new QuestionExample();
+        questionExample.setOrderByClause("gmtCreate desc");
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setPage(offset);
+
+        System.out.println(questionQueryDTO.getPage()+"  "+questionQueryDTO.getSize());
+
+       List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
+        System.out.println("questions  "+questions);
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
