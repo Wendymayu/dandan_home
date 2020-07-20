@@ -54,7 +54,7 @@ public class QuestionService {
         questionQueryDTO.setSearch(search);
         Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
 
-        System.out.println("totalcount  " + totalCount);
+        //System.out.println("totalcount  " + totalCount);
 
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -78,10 +78,10 @@ public class QuestionService {
         questionQueryDTO.setSize(size);
         questionQueryDTO.setPage(offset);
 
-        System.out.println(questionQueryDTO.getPage()+"  "+questionQueryDTO.getSize());
+        //System.out.println(questionQueryDTO.getPage()+"  "+questionQueryDTO.getSize());
 
        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
-        System.out.println("questions  "+questions);
+        //System.out.println("questions  "+questions);
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
