@@ -40,7 +40,10 @@
                         </ul>
                     </li>
                     <li th:if="${session.githubUser == null}">
-                        <a href="https://github.com/login/oauth/authorize?client_id=936000b2d7886a2abf3c&redirect_uri=http://localhost:8081/callback?scope=user&state=1">登录</a></li>
+                        <!--<a href="https://github.com/login/oauth/authorize?client_id=936000b2d7886a2abf3c&redirect_uri=http://localhost:8081/callback?scope=user&state=1">登录</a>-->
+                        <a th:href="@{https://github.com/login/oauth/authorize(client_id='936000b2d7886a2abf3c',redirect_uri=${#httpServletRequest.getServletContext().getAttribute('redirectUri')},scope='user',state=1)}">登录</a>
+
+                    </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

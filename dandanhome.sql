@@ -22,12 +22,12 @@ ALTER TABLE question DROP COLUMN id;
 
 CREATE TABLE question
 (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(50),
     description TEXT,
     gmtCreate BIGINT,
     gmtModified BIGINT,
-    creator INT,
+    creator BIGINT,
     commentCount INT DEFAULT 0,
     viewCount INT DEFAULT 0,
     likeCount INT DEFAULT 0,
@@ -47,12 +47,12 @@ CREATE TABLE COMMENT
     commentCount BIGINT DEFAULT 0
 );
 
-alter table comment MODIFY commentCount bigint default 0;
+ALTER TABLE COMMENT MODIFY commentCount BIGINT DEFAULT 0;
 
 /*删除表`user`*/
 DROP TABLE question;
 
-DROP TABLE comment;
+DROP TABLE COMMENT;
 
 /*删除表中一列*/
 ALTER TABLE USER DROP COLUMN avatar_url;
